@@ -1138,7 +1138,7 @@ h1 {
 
 
 
-<!DOCTYPE html>
+
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
@@ -1265,83 +1265,5 @@ Console.WriteLine("Натиснете Ctrl+C за да спрете сървър
 var server = new SimpleHttpServer(8080, Path.Combine(AppContext.BaseDirectory, "wwwroot"));
 await server.StartAsync();
 
-class SimpleHttpServer
-{
-    private readonly HttpListener _listener;
-    private readonly string _rootPath;
-    
-    public SimpleHttpServer(int port, string rootPath)
-    {
-        _listener = new HttpListener();
-        _listener.Prefixes.Add($"http://localhost:{port}/");
-        _rootPath = rootPath;
-    }
-    
-    public async Task StartAsync()
-    {
-        _listener.Start();
-        Console.WriteLine($"Сървърът работи на http://localhost:8080");
-        
-        while (true)
-        {
-            var context = await _listener.GetContextAsync();
-            _ = HandleRequestAsync(context);
-        }
-    }
-    
-    private async Task HandleRequestAsync(HttpListenerContext context)
-    {
-        try
-        {
-            var request = context.Request;
-            var response = context.Response;
-            
-            string requestedPath = request.Url?.LocalPath ?? "/";
-            if (requestedPath == "/")
-                requestedPath = "/index.html";
-            
-            string filePath = Path.Combine(_rootPath, requestedPath.TrimStart('/'));
-            
-            if (File.Exists(filePath))
-            {
-                byte[] buffer = await File.ReadAllBytesAsync(filePath);
-                
-                response.ContentType = GetContentType(filePath);
-                response.ContentLength64 = buffer.Length;
-                response.StatusCode = 200;
-                
-                await response.OutputStream.WriteAsync(buffer);
-            }
-            else
-            {
-                response.StatusCode = 404;
-                byte[] buffer = Encoding.UTF8.GetBytes("404 - Файлът не е намерен");
-                await response.OutputStream.WriteAsync(buffer);
-            }
-            
-            response.OutputStream.Close();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Грешка: {ex.Message}");
-        }
-    }
-    
-    private string GetContentType(string filePath)
-    {
-        string extension = Path.GetExtension(filePath).ToLower();
-        return extension switch
-        {
-            ".html" => "text/html; charset=utf-8",
-            ".css" => "text/css; charset=utf-8",
-            ".js" => "application/javascript; charset=utf-8",
-            ".png" => "image/png",
-            ".jpg" or ".jpeg" => "image/jpeg",
-            ".gif" => "image/gif",
-            ".svg" => "image/svg+xml",
-            ".ico" => "image/x-icon",
-            _ => "application/octet-stream"
-        };
-    }
-}
+
 
