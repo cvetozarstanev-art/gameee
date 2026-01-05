@@ -15,8 +15,6 @@
 
 </Project>
 
-
-
 // Simple Christmas melody generator using Web Audio API
 class ChristmasMusicPlayer {
     constructor() {
@@ -173,10 +171,6 @@ class ChristmasMusicPlayer {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ChristmasMusicPlayer;
 }
-
-
-
-
 
 // Game state
 let cards = [];
@@ -490,10 +484,6 @@ musicToggleGame.addEventListener('click', toggleMusic);
 
 // Initialize music on page load
 initMusic();
-
-
-
-
 
 
 * {
@@ -1133,12 +1123,7 @@ h1 {
 }
 
 
-
-
-
-
-
-
+<!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
@@ -1251,10 +1236,6 @@ h1 {
 </html>
 
 
-
-
-
-
 using System.Net;
 using System.Text;
 
@@ -1344,3 +1325,5 @@ class SimpleHttpServer
         };
     }
 }
+
+
