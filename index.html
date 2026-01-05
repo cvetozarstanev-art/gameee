@@ -317,6 +317,7 @@
       border-radius: 10px;
       font-size: 42px;
       user-select: none;
+      pointer-events: none;
     }
 
     .card-back {
@@ -681,10 +682,19 @@
 
         el.appendChild(back);
         el.appendChild(face);
-        el.addEventListener('click', () => handleCardClick(card.id));
         gameBoard.appendChild(el);
       });
     }
+
+    gameBoard.addEventListener('click', (e) => {
+      const cardEl = e.target instanceof Element ? e.target.closest('.card') : null;
+      if(!cardEl) return;
+      const idAttr = cardEl.getAttribute('data-id');
+      if(idAttr == null) return;
+      const id = Number.parseInt(idAttr, 10);
+      if(Number.isNaN(id)) return;
+      handleCardClick(id);
+    });
 
     function startTimer(){
       if(!gameStarted){
